@@ -121,7 +121,7 @@ void tasks_create_all(void)
 {
     BaseType_t ret;
 
-    /* TODO  Task Create Canal 0 - Prioridad 1 (menor) */
+    /* Task Create Canal 0 - Prioridad 1 (menor) */
     /*
         Example:
     
