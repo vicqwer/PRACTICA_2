@@ -54,11 +54,11 @@ Estructura del proyecto
 Salida esperada en monitor serial
 
 Durante la ejecución, el monitor serial muestra información periódica de cada tarea:
-
+```text
 I TASKS: [POT0-LED0] raw=2048 duty=127 heap=189432 wm=1512
 I TASKS: [POT1-LED1] raw=1024 duty= 63 heap=189432 wm=1488
 I TASKS: [POT2-LED2] raw=3210 duty=199 heap=189432 wm=1456
-
+```
 
 Donde:
 
