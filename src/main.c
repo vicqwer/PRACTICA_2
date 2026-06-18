@@ -5,8 +5,7 @@
  * =============================================================================
  * CONCLUSION DEL EQUIPO
  * Integrantes:  * Integrantes: Victor Hugo Barrera Garcia, Sergio Garcia Hernandez 
- *
-/*
+ * Fecha: 18/06/2026
 * En esta practica se implemento un sistema multitarea en FreeRTOS para leer tres potenciometros
 * mediante el ADC de la ESP32 y controlar el brillo de tres LEDs usando PWM. Se comprobo que cada
 * tarea puede trabajar de forma independiente, manteniendo un periodo de ejecucion constante gracias
@@ -21,9 +20,8 @@
 * especialmente cuando varias tareas estan listas al mismo tiempo. En general, la practica permitio comprender
 * mejor la modularizacion del codigo, el manejo de tareas en FreeRTOS y la relacion entre lectura analogica,
 * escalamiento de datos y control PWM.
-*
-  */
-
+*/
+/*
  * =============================================================================
  *
  * Descripcion:
@@ -50,11 +48,11 @@
 
 void app_main(void)
 {
-    /* Inicializar subsistema ADC (tres potenciometros) */
+    /*Inicializar subsistema ADC (tres potenciometros) */
     adc_reader_init();
-    /* Inicializar subsistema LED PWM (tres canales LEDC) */
+    /*Inicializar subsistema LED PWM (tres canales LEDC) */
     leds_init();
-    /* Crear las tres tareas FreeRTOS e iniciar el scheduler */
+    /*Crear las tres tareas FreeRTOS e iniciar el scheduler */
     tasks_create_all();
-    /* app_main retorna; FreeRTOS continua ejecutando las tareas */
+    /*app_main retorna; FreeRTOS continua ejecutando las tareas */
 }
