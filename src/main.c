@@ -4,22 +4,41 @@
  *
  * =============================================================================
  * CONCLUSION DEL EQUIPO
- * Integrantes:  * Integrantes: Victor Hugo Barrera Garcia, Sergio Garcia Hernandez 
- * Fecha: 18/06/2026
-* En esta practica se implemento un sistema multitarea en FreeRTOS para leer tres potenciometros
-* mediante el ADC de la ESP32 y controlar el brillo de tres LEDs usando PWM. Se comprobo que cada
-* tarea puede trabajar de forma independiente, manteniendo un periodo de ejecucion constante gracias
-* al uso de vTaskDelay(), lo cual permite que el planificador administre correctamente el tiempo del CPU.
-*
-* El uso de pvParameters permitio reutilizar una sola funcion de tarea para los tres canales, evitando
-* duplicar codigo y haciendo que el programa sea mas ordenado y facil de ampliar. Al pasar una estructura
-* con el canal ADC, el canal LED y el nombre de la tarea, cada instancia pudo comportarse de manera diferente
-* sin necesidad de crear funciones separadas.
-*
-* Tambien se observo que las prioridades pueden influir en el orden en que aparecen los mensajes en la UART,
-* especialmente cuando varias tareas estan listas al mismo tiempo. En general, la practica permitio comprender
-* mejor la modularizacion del codigo, el manejo de tareas en FreeRTOS y la relacion entre lectura analogica,
-* escalamiento de datos y control PWM.
+ *
+ * Integrantes: Victor Hugo Barrera Garcia, Sergio Garcia Hernandez
+ *
+ * En esta practica se implemento un sistema multitarea en FreeRTOS para leer tres
+ * potenciometros mediante el ADC de la ESP32 y controlar el brillo de tres LEDs
+ * usando PWM. Se comprobo que cada tarea puede trabajar de forma independiente,
+ * manteniendo un periodo de ejecucion constante gracias al uso de vTaskDelay(),
+ * lo cual permite que el planificador libere el CPU y ejecute otras tareas, a
+ * diferencia de un retardo por ciclos for que mantendria ocupado al procesador.
+ *
+ * El uso de pvParameters permitio reutilizar una sola funcion de tarea para los
+ * tres canales, evitando variables globales innecesarias y la duplicacion de
+ * funciones casi iguales. Al pasar una estructura con el canal ADC, el canal LED
+ * y el nombre de la tarea, cada instancia pudo comportarse de manera diferente
+ * sin modificar la firma fija de vTaskPotLED().
+ *
+ * Los bloques task_params_t se declararon como static const para asegurar que
+ * permanezcan validos durante toda la ejecucion del programa. Si se declararan
+ * como variables locales dentro de tasks_create_all(), al terminar esa funcion
+ * la memoria podria reutilizarse y las tareas recibirian datos incorrectos; esto
+ * se detectaria experimentalmente al observar lecturas, nombres o canales
+ * erroneos en la salida UART.
+ *
+ * Aunque las tres tareas tienen el mismo periodo de 50 ms, sus prioridades pueden
+ * notarse cuando varias quedan listas al mismo tiempo o cuando existe carga en el
+ * sistema. En esos casos, FreeRTOS atiende primero a la tarea con mayor prioridad,
+ * por lo que el orden de los mensajes en la terminal puede cambiar.
+ *
+ * El stack watermark permite observar cuanta pila libre conserva cada tarea. Se
+ * esperarian valores parecidos porque ejecutan la misma funcion, aunque pueden
+ * diferir ligeramente por el orden de ejecucion, llamadas a impresion por UART o
+ * consumo temporal de pila. Si se agregara un cuarto potenciometro y LED, el
+ * diseno modular solo requeriria agregar el nuevo canal en los arreglos de ADC y
+ * LEDC, crear otro bloque task_params_t y una cuarta llamada a xTaskCreate(),
+ * sin cambiar las firmas publicas de las funciones.
 */
 /*
  * =============================================================================
